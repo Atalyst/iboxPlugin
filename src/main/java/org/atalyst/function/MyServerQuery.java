@@ -66,15 +66,14 @@ public class MyServerQuery {
 
         String[] temp;
         MessageChain sendChain = null;
-        address = ab.deleteCharAt(0).toString();                                                                          //预处理字符串
+        address = ab.deleteCharAt(0).toString();                                                     //预处理字符串
         temp = address.split("/");
         try {
-            if(server.getServerInfo().get("passwordProtected").toString().equals("true")){          //*
+            if(server.getServerInfo().get("passwordProtected").toString().equals("true")){
                 passwordProtected = "开启";
             }else {
                 passwordProtected = "无";
             }
-                                                                                                    //*
             if(server.getServerInfo().get("secure").toString().equals("true")){
                 vac = "安全";
             }else {

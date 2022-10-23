@@ -1,7 +1,6 @@
 package org.atalyst.command;
 
 import net.mamoe.mirai.console.command.CommandSender;
-import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage;
 import net.mamoe.mirai.console.command.java.JRawCommand;
 import net.mamoe.mirai.message.data.MessageChain;
 import org.atalyst.Ibox;
@@ -18,12 +17,20 @@ public final class QueryCommand extends JRawCommand {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull MessageChain args){
-        if(commandSenderIsConfigGroup((MemberCommandSenderOnMessage) sender)){
-            sender.sendMessage("test");
+        if(commandSenderIsConsole(sender)) {                                       //指令发送者为控制台
+            Ibox.INSTANCE.getLogger().info("请在群内使用该指令");
+        } else {                                                                   //指令发送者为群成员
+            if(commandSenderIsConfigGroup(sender)){
+                sender.sendMessage("test");
+            }
         }
     }
 
-    private boolean commandSenderIsConfigGroup(MemberCommandSenderOnMessage sender){
-        return MyConfig.INSTANCE.getQqGroup().contains(sender);
+    private boolean commandSenderIsConsole(CommandSender sender){
+        return (sender.getSubject() == null);
+    }
+
+    private boolean commandSenderIsConfigGroup(CommandSender sender){
+        return MyConfig.INSTANCE.getQqGroup().contains(sender.getSubject().getId());
     }
 }
